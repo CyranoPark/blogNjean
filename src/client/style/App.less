@@ -2,15 +2,48 @@ h1 {
   color: pink;
 }
 
-body {
+body, html {
+  height: 100%;
   text-align: center;
   margin: auto;
 }
 
 a {
-  color: black;
   text-decoration: none;
   outline: none
+}
+
+i {
+  border: none;
+}
+
+#root {
+  height: 100%;
+}
+
+#theme-white {
+  min-height: 100vh;
+  background-color: white;
+}
+
+#theme-second {
+  min-height: 100vh;
+  color: white;
+  background-color: black
+}
+
+#theme-third {
+  min-height: 100vh;
+  color: white;
+  background-color: rgb(0, 151, 131);
+}
+
+#theme-white a {
+  color: black;
+}
+
+#theme-third a, #theme-second a {
+  color: white;
 }
 
 .title {
@@ -21,38 +54,9 @@ a {
   border-bottom: 1px solid black;
 }
 .app {
+  height: 100%;
   margin-top: 20px;
   display: flex;
-}
-
-.menu {
-  position: fixed;
-  width: 20%;
-  height: 100vh;
-}
-
-.menu-title {
-  height: 40px;
-  font-size: 20px;
-  line-height: 40px;
-  font-weight: bold;
-  border-bottom: 1px solid black;
-}
-
-.menu-list {
-  width: 80%;
-  list-style: none;
-  margin-block-start: 0;
-  margin-block-end: 0;
-  padding-inline-start: 0;
-  margin: 10px auto;
-}
-
-.menu-list > li {
-  margin: 0 auto;
-  width: 80%;
-  padding: 5px 10px;
-  border: 1px solid #DDDDDD;
 }
 
 .contents {

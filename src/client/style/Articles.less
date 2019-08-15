@@ -3,14 +3,12 @@
 }
 .posts-container {
   width: 70%;
-  height: 100vh;
 }
 
 .tags-container{
   position: fixed;
-  left: 70%;
-  width: 30%;
-  height: 100vh;
+  left: 77%;
+  width: 20%;
 }
 
 .post-title, .tag-title {
@@ -21,12 +19,17 @@
 }
 
 .post-sort {
+  margin-top: 10px;
   text-align: right;
-  margin-right: 20px;
+  margin-right: 40px;
+  font-size: 13px;
+  font-weight: bold;
 }
-
+.post-sort > span {
+  cursor: pointer;
+}
 .post {
-  margin: 20px;
+  margin: 10px;
 }
 
 .post-list {
@@ -41,12 +44,13 @@
 .post-item {
   padding: 10px;
   overflow: auto;
-  box-shadow: 2px 2px 2px 2px gray;
   margin-bottom: 10px;
+  border: 1px solid #ddd;
+  transition: 0.3s ease;
 }
 
 .post-item:hover {
-  background: #eee;
+  opacity: 0.3;
   cursor: pointer;
 }
 
@@ -55,6 +59,11 @@
   height: 150px;
   float: left;
   margin: 0 15px 0 0;
+}
+.backbtn {
+  width: 70px;
+  height: 30px;
+  padding: 5px;
 }
 
 .tags-on-article {
@@ -73,7 +82,7 @@
 }
 
 .post-detail-info label {
-  margin: 10px;
+  margin: 3px;
   color: white;
   background-color: blueviolet;
   border-radius: 5px;
@@ -88,4 +97,21 @@
 .post-create-data > p {
   text-align: left;
   margin: 5px;
+}
+
+.tag-list {
+  width: 80%;
+  list-style: none;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  padding-inline-start: 0;
+  margin: 10px auto;
+}
+
+.tag-list > li {
+  cursor: pointer;
+  margin: 0 auto;
+  width: 80%;
+  padding: 5px 10px;
+  border: 1px solid #DDDDDD;
 }

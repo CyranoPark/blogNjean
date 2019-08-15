@@ -32,3 +32,11 @@ export function getArticleDetail(articleId) {
   return fetch(url)
     .then(res => res.json());
 }
+
+export function deleteArticle(articleId) {
+  const url = `/api/v1/articles/${articleId}`;
+  return fetch(url, {
+    method: 'DELETE'
+  })
+    .then(res => res.json());
+}
