@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import _ from 'lodash';
 import '../style/Menu.less';
 
 export default function Menu(props) {
-  const reLoadPage = window.location.reload.bind(window.location);
+  const resetArticlesPage = props.resetArticlesPage;
 
   function renderAdminMenu(currentPath) {
     if (currentPath.includes('/admin')) {
@@ -30,13 +29,13 @@ export default function Menu(props) {
       <div>
         <ul className="menu-list">
           <li className="home">
-            <Link to="/" onClick={reLoadPage}>Home</Link>
+            <Link to="/">Home</Link>
           </li>
           <li className="articles">
-            <Link to="/articles" onClick={reLoadPage}>articles</Link>
+            <Link to="/articles" onClick={resetArticlesPage}>articles</Link>
           </li>
           <li className="admin">
-            <Link to="/admin" onClick={reLoadPage}>admin</Link>
+            <Link to="/admin">admin</Link>
           </li>
           {renderAdminMenu(props.location.pathname)}
         </ul>

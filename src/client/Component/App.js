@@ -43,6 +43,7 @@ export default class App extends Component {
     this.onBackButtonClick = this.goBackBeforeError.bind(this);
     this.onThemeBtnClick = this.changeTheme.bind(this);
     this.onTagCancleBtnClick = this.unpackTagFilter.bind(this);
+    this.resetArticlesPage = this.resetArticleList.bind(this);
   }
 
   componentDidMount() {
@@ -184,6 +185,25 @@ export default class App extends Component {
     });
   }
 
+  resetArticleList() {
+    const { pageLimit, sortMethods } = this.state;
+
+    getPostList(pageLimit, sortMethods[0], 0)
+      .then((articleList) => {
+        const { posts } = articleList;
+
+        getAllTags().then((allTags) => {
+          this.setState({
+            articles: posts,
+            tags: allTags,
+            selectedTag: null,
+            isTagClicked: false,
+            pageIndex: 0,
+          });
+        });
+      });
+  }
+
   unpackTagFilter() {
     this.setState({
       selectedTag: null,
@@ -235,7 +255,7 @@ export default class App extends Component {
       <div id={`theme-${currentTheme}`}>
         <header className="title">Hanjun Blog N Jean</header>
         <div className="app">
-          <Route component={Menu} />
+          <Route render={(props) => <Menu {...props} resetArticlesPage={this.resetArticlesPage} />} />
           <section className="contents">
             <Switch>
               <Route
