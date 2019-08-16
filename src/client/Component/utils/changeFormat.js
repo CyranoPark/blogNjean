@@ -1,4 +1,4 @@
-export default function changeDateFormat(date, format) {
+export function changeDateFormat(date, format) {
   const targetDate = new Date(date);
   if (format) {
     return (
@@ -15,4 +15,8 @@ export default function changeDateFormat(date, format) {
     ${new Date(targetDate).getMonth() + 1}월
     ${new Date(targetDate).getDate()}일`
   );
+}
+
+export function changeTitleFormat(title) {
+  return title.replace('?', '_');
 }

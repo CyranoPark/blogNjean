@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../style/ErrorMessage.less';
 
-export default function ErrorMessage (props) {
+export default function ErrorMessage(props) {
   return (
     <div className="notfound-container">
       <div className="notfound">
@@ -12,6 +12,6 @@ export default function ErrorMessage (props) {
         </div>
         <Link to="/" onClick={props.onBackButtonClick}>Go TO Homepage</Link>
       </div>
-	  </div>
+    </div>
   );
 }

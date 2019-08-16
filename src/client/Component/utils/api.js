@@ -5,7 +5,7 @@ export function getPostList(limit, sort, pageIndex) {
     .then(res => res.json());
 }
 
-export function getAllTags () {
+export function getAllTags() {
   const url = '/api/v1/tags';
 
   return fetch(url)

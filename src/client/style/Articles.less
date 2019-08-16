@@ -1,6 +1,7 @@
 .contents-container {
   display: flex;
 }
+
 .posts-container {
   width: 70%;
 }
@@ -18,16 +19,36 @@
   font-weight: bold;
 }
 
+.tag-title {
+  border-bottom: 1px solid #ddd;
+}
+
 .post-sort {
+  display: flex;
   margin-top: 10px;
-  text-align: right;
-  margin-right: 40px;
   font-size: 13px;
   font-weight: bold;
 }
+
 .post-sort > span {
+  font-size: 15px;
   cursor: pointer;
 }
+
+.selected-tag {
+  width: 90%;
+  padding-left: 20%;
+  text-align: left;
+}
+
+.selected-tag > span {
+  cursor: pointer;
+}
+
+.selected-tag i {
+  margin-left: 5px;
+}
+
 .post {
   margin: 10px;
 }
@@ -60,6 +81,7 @@
   float: left;
   margin: 0 15px 0 0;
 }
+
 .backbtn {
   width: 70px;
   height: 30px;
@@ -76,12 +98,11 @@
   overflow: none;
 }
 
-
 .post-detail-info {
   margin-left: 120px;
 }
 
-.post-detail-info label {
+.post-detail-info button {
   margin: 3px;
   color: white;
   background-color: blueviolet;
@@ -113,5 +134,4 @@
   margin: 0 auto;
   width: 80%;
   padding: 5px 10px;
-  border: 1px solid #DDDDDD;
 }
