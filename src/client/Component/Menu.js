@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import '../style/Menu.less';
 
 export default function Menu(props) {
-  const resetArticlesPage = props.resetArticlesPage;
-
   function renderAdminMenu(currentPath) {
     if (currentPath.includes('/admin')) {
       return (
@@ -32,7 +30,7 @@ export default function Menu(props) {
             <Link to="/">Home</Link>
           </li>
           <li className="articles">
-            <Link to="/articles" onClick={resetArticlesPage}>articles</Link>
+            <Link to="/articles">articles</Link>
           </li>
           <li className="admin">
             <Link to="/admin">admin</Link>

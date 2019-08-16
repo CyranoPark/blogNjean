@@ -86,22 +86,19 @@ export default class App extends Component {
       });
   }
 
-  fetchArticleDetail(articleTitle, articleID) {
+  fetchArticleDetail(articleTitle) {
     const { articles, tags: tagList } = this.state;
-    let postId = articleID;
+    let postId;
 
-    if (!articleID) {
-      articles.forEach((article) => {
-        if (changeTitleFormat(article.title) === articleTitle) {
-          postId = article.id;
-        }
-      });
-    }
+    articles.forEach((article) => {
+      if (changeTitleFormat(article.title) === articleTitle) {
+        postId = article.id;
+      }
+    });
 
     getArticleDetail(postId)
       .then((detail) => {
-        const postDetail = detail;
-        const tagsOnArticles = postDetail.tags.map((tag) => {
+        const tagsOnArticles = detail.tags.map((tag) => {
           for (let i = 0; i < tagList.length; i++) {
             if (tagList[i].id === tag) {
               return tagList[i].name;
@@ -110,9 +107,8 @@ export default class App extends Component {
           return false;
         });
 
-        postDetail.tagNames = tagsOnArticles;
-
-        return postDetail;
+        detail.tagNames = tagsOnArticles;
+        return detail;
       })
       .then((detail) => {
         getCommentsOnArticle(postId)
@@ -239,23 +235,14 @@ export default class App extends Component {
     } = this.state;
 
     if (isPageLoadError) {
-      return (
-        <Route
-          render={(props) =>
-            <ErrorMessage
-              {...props}
-              onBackButtonClick={this.onBackButtonClick}
-            />
-          }
-        />
-      );
+      return <Route component={ErrorMessage} />;
     }
 
     return (
       <div id={`theme-${currentTheme}`}>
         <header className="title">Hanjun Blog N Jean</header>
         <div className="app">
-          <Route render={(props) => <Menu {...props} resetArticlesPage={this.resetArticlesPage} />} />
+          <Route render={props => <Menu {...props} resetArticlesPage={this.resetArticlesPage} />} />
           <section className="contents">
             <Switch>
               <Route
