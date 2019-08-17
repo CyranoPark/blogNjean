@@ -48,16 +48,14 @@ export default class App extends Component {
 
   componentDidMount() {
     const { pageLimit, currentSorting, pageIndex } = this.state;
+    const fetchArticleList = getPostList(pageLimit, currentSorting, pageIndex);
+    const fetchAllTags = getAllTags();
 
-    getPostList(pageLimit, currentSorting, pageIndex)
-      .then((articleList) => {
-        const { posts } = articleList;
-
-        getAllTags().then((allTags) => {
-          this.setState({
-            articles: posts,
-            tags: allTags
-          });
+    Promise.all([fetchArticleList, fetchAllTags])
+      .then(([{ posts }, tagList]) => {
+        this.setState({
+          articles: posts,
+          tags: tagList
         });
       });
   }
@@ -95,8 +93,8 @@ export default class App extends Component {
         postId = article.id;
       }
     });
-
-    getArticleDetail(postId)
+    const fetchArticleComments = getCommentsOnArticle(postId);
+    const fetchArticleContents = getArticleDetail(postId)
       .then((detail) => {
         const tagsOnArticles = detail.tags.map((tag) => {
           for (let i = 0; i < tagList.length; i++) {
@@ -109,15 +107,14 @@ export default class App extends Component {
 
         detail.tagNames = tagsOnArticles;
         return detail;
-      })
-      .then((detail) => {
-        getCommentsOnArticle(postId)
-          .then((comments) => {
-            this.setState({
-              currentArticleData: detail,
-              commentsOnCurArticle: comments
-            });
-          });
+      });
+
+    Promise.all([fetchArticleContents, fetchArticleComments])
+      .then(([contents, comments]) => {
+        this.setState({
+          currentArticleData: contents,
+          commentsOnCurArticle: comments
+        });
       })
       .catch(() => {
         this.setState({
@@ -140,6 +137,7 @@ export default class App extends Component {
 
     if (isTagClicked) {
       let filteredArticleList;
+
       if (currentSorting === sortMethods[0]) {
         filteredArticleList = arraySortByDate(filteredArticlesByTag, 'created_at', sortMethods[1]);
       } else {
@@ -183,19 +181,17 @@ export default class App extends Component {
 
   resetArticleList() {
     const { pageLimit, sortMethods } = this.state;
+    const fetchArticleList = getPostList(pageLimit, sortMethods[0], 0);
+    const fetchAllTags = getAllTags();
 
-    getPostList(pageLimit, sortMethods[0], 0)
-      .then((articleList) => {
-        const { posts } = articleList;
-
-        getAllTags().then((allTags) => {
-          this.setState({
-            articles: posts,
-            tags: allTags,
-            selectedTag: null,
-            isTagClicked: false,
-            pageIndex: 0,
-          });
+    Promise.all([fetchArticleList, fetchAllTags])
+      .then(([{ posts }, tagList]) => {
+        this.setState({
+          articles: posts,
+          tags: tagList,
+          selectedTag: null,
+          isTagClicked: false,
+          pageIndex: 0,
         });
       });
   }
@@ -242,7 +238,7 @@ export default class App extends Component {
       <div id={`theme-${currentTheme}`}>
         <header className="title">Hanjun Blog N Jean</header>
         <div className="app">
-          <Route render={props => <Menu {...props} resetArticlesPage={this.resetArticlesPage} />} />
+          <Route component={Menu} />
           <section className="contents">
             <Switch>
               <Route
@@ -288,6 +284,7 @@ export default class App extends Component {
                   <Admin
                     {...props}
                     onThemeBtnClick={this.onThemeBtnClick}
+                    resetArticlesPage={this.resetArticlesPage}
                   />
                 }
               />

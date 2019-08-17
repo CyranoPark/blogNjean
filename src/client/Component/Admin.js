@@ -60,31 +60,30 @@ export default class Admin extends Component {
       pageLimit,
       pageIndex
     } = this.state;
+    const deleteArticleRequest = deleteArticle(articleId);
+    const fetchArticleList = getPostList(pageLimit, curSortMethod, pageIndex);
 
-    deleteArticle(articleId)
-      .then((res) => {
-        alert(`삭제가 완료되었습니다. \n Result Message : ${res.result}`);
+    Promise.all([deleteArticleRequest, fetchArticleList])
+      .then(([deleteMessage, articles]) => {
+        const { posts, total_post_count: totalCount } = articles;
+        this.setState({
+          currentArticleList: posts,
+          totalPostCount: totalCount
+        });
 
-        getPostList(pageLimit, curSortMethod, pageIndex)
-          .then((articles) => {
-            const { posts, total_post_count: totalCount } = articles;
-
-            this.setState({
-              currentArticleList: posts,
-              totalPostCount: totalCount
-            });
-          });
+        this.props.resetArticlesPage();
+        alert(`삭제가 완료되었습니다. \n Result Message : ${deleteMessage}`);
       });
   }
 
   changecurSortMethod() {
+    const willChangeSortMethod = curSortMethod === sortMethods[0] ? sortMethods[1] : sortMethods[0];
     const {
       curSortMethod,
       sortMethods,
       pageLimit,
       pageIndex
     } = this.state;
-    const willChangeSortMethod = curSortMethod === sortMethods[0] ? sortMethods[1] : sortMethods[0];
 
     getPostList(pageLimit, willChangeSortMethod, pageIndex)
       .then((articles) => {

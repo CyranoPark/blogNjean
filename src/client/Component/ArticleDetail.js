@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { changeDateFormat } from './utils/changeFormat';
-import arraySortByDate from './utils/arraySortByDate'
+import arraySortByDate from './utils/arraySortByDate';
 import '../style/ArticleDetail.less';
 
 export default class AticlesDetail extends Component {
