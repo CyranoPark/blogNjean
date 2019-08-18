@@ -6,10 +6,10 @@ import '../style/ArticleDetail.less';
 export default class AticlesDetail extends Component {
 
   componentDidMount() {
-    const { loadDetail } = this.props;
+    const { fetchArticleDetail } = this.props;
     const articleTitle = this.props.match.params.articleTitle;
 
-    loadDetail(articleTitle);
+    fetchArticleDetail(articleTitle);
   }
 
   renderArticle(data) {

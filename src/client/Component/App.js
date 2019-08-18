@@ -15,6 +15,9 @@ import { changeTitleFormat } from './utils/changeFormat';
 import arraySortByDate from './utils/arraySortByDate';
 import '../style/App.less';
 
+const sortMethods = ['dsc', 'asc'];
+const themes = ['white', 'second', 'third'];
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -27,22 +30,20 @@ export default class App extends Component {
       pageLimit: 10,
       currentArticleData: {},
       commentsOnCurArticle: [],
-      currentSorting: 'dsc',
-      sortMethods: ['dsc', 'asc'],
+      currentSorting: sortMethods[0],
       selectedTag: null,
       isTagClicked: false,
       isPageLoadError: false,
-      currentTheme: 'white',
-      themes: ['white', 'second', 'third']
+      currentTheme: themes[0]
     };
 
-    this.loadArticle = this.fetchArticleDetail.bind(this);
+    this.fetchArticleDetail = this.fetchArticleDetail.bind(this);
     this.changePostsSorting = this.changeArticlesSort.bind(this);
     this.onScrollDown = this.getAdditionalList.bind(this);
     this.onTagClick = this.filterArticlesByTag.bind(this);
     this.onBackButtonClick = this.goBackBeforeError.bind(this);
     this.onThemeBtnClick = this.changeTheme.bind(this);
-    this.onTagCancleBtnClick = this.unpackTagFilter.bind(this);
+    this.onTagCancelBtnClick = this.unpackTagFilter.bind(this);
     this.resetArticlesPage = this.resetArticleList.bind(this);
   }
 
@@ -86,8 +87,12 @@ export default class App extends Component {
 
   fetchArticleDetail(articleTitle) {
     const { articles, tags: tagList } = this.state;
-    let postId;
 
+    if (!articles.length) {
+      return;
+    }
+
+    let postId;
     articles.forEach((article) => {
       if (changeTitleFormat(article.title) === articleTitle) {
         postId = article.id;
@@ -129,7 +134,6 @@ export default class App extends Component {
       pageLimit,
       pageIndex,
       currentSorting,
-      sortMethods,
       isTagClicked
     } = this.state;
 
@@ -162,7 +166,7 @@ export default class App extends Component {
   }
 
   filterArticlesByTag(tagId) {
-    const { articles, sortMethods } = this.state;
+    const { articles } = this.state;
     const filteredPosts = articles.filter((article) => {
       if (article.tags.includes(tagId)) {
         return article;
@@ -180,7 +184,7 @@ export default class App extends Component {
   }
 
   resetArticleList() {
-    const { pageLimit, sortMethods } = this.state;
+    const { pageLimit } = this.state;
     const fetchArticleList = getPostList(pageLimit, sortMethods[0], 0);
     const fetchAllTags = getAllTags();
 
@@ -209,10 +213,9 @@ export default class App extends Component {
     });
   }
 
-  changeTheme(themeIndex) {
-    const { themes } = this.state;
+  changeTheme(theme) {
     this.setState({
-      currentTheme: themes[themeIndex]
+      currentTheme: theme
     });
   }
 
@@ -221,7 +224,8 @@ export default class App extends Component {
       currentTheme,
       articles,
       filteredArticlesByTag,
-      tags, currentArticleData,
+      tags,
+      currentArticleData,
       currentSorting,
       pageIndex,
       isTagClicked,
@@ -247,15 +251,15 @@ export default class App extends Component {
               />
               <Route
                 exact path="/articles"
-                render={(props) =>
+                render={(routeProps) =>
                   <Articles
-                    {...props}
+                    {...routeProps}
                     articles={articles}
                     filteredArticlesByTag={filteredArticlesByTag}
                     tags={tags}
                     pageIndex={pageIndex}
-                    onTagClick={this.onTagClick}
-                    onTagCancleBtnClick={this.onTagCancleBtnClick}
+                    handleTagClick={this.onTagClick}
+                    handleTagCancelBtnClick={this.onTagCancelBtnClick}
                     onScrollDown={this.onScrollDown}
                     isTagClicked={isTagClicked}
                     selectedTag={selectedTag}
@@ -266,25 +270,24 @@ export default class App extends Component {
               />
               <Route
                 path="/articles/:articleTitle"
-                render={(props) =>
-                  articles.length ? (
-                    <AticlesDetail
-                      {...props}
-                      tags={tags}
-                      loadDetail={this.loadArticle}
-                      currentArticleData={currentArticleData}
-                      commentsOnCurArticle={commentsOnCurArticle}
-                    />
-                  ) : null
+                render={(routeProps) =>
+                  <AticlesDetail
+                    {...routeProps}
+                    tags={tags}
+                    fetchArticleDetail={this.fetchArticleDetail}
+                    currentArticleData={currentArticleData}
+                    commentsOnCurArticle={commentsOnCurArticle}
+                  />
                 }
               />
               <Route
                 path="/admin"
-                render={(props) =>
+                render={(routeProps) =>
                   <Admin
-                    {...props}
+                    {...routeProps}
                     onThemeBtnClick={this.onThemeBtnClick}
                     resetArticlesPage={this.resetArticlesPage}
+                    themes={themes}
                   />
                 }
               />

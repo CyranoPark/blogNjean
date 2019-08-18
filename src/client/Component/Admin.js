@@ -117,9 +117,9 @@ export default class Admin extends Component {
         />
         <Route
           path="/admin/posts"
-          render={(props) =>
+          render={(routeProps) =>
             <Posts
-              {...props}
+              {...routeProps}
               currentArticleList={currentArticleList}
               totalPostCount={totalPostCount}
               pageIndex={pageIndex}
@@ -134,10 +134,11 @@ export default class Admin extends Component {
         <Route
           exact
           path="/admin/theme"
-          render={(props) =>
+          render={(routeProps) =>
             <Theme
-              {...props}
+              {...routeProps}
               onThemeBtnClick={this.props.onThemeBtnClick}
+              themes={this.props.themes}
             />
           }
         />

@@ -17,10 +17,12 @@ export default class Articles extends Component {
     window.addEventListener('scroll', this.onArticlesScroll);
   }
 
-  componentDidUpdate() {
-    if (this.props.isTagClicked) {
+  componentDidUpdate(prevProps) {
+    if (!prevProps.isTagClicked && this.props.isTagClicked) {
       window.removeEventListener('scroll', this.onArticlesScroll);
-    } else {
+    }
+
+    if (prevProps.isTagClicked && !this.props.isTagClicked) {
       window.addEventListener('scroll', this.onArticlesScroll);
     }
   }
@@ -57,8 +59,8 @@ export default class Articles extends Component {
       selectedTag,
       changePostsSorting,
       currentSorting,
-      onTagClick,
-      onTagCancleBtnClick
+      handleTagClick,
+      handleTagCancelBtnClick
     } = this.props;
 
     const sortIconClassName = currentSorting === 'dsc' ? 'fas fa-sort-down' : 'fas fa-sort-up';
@@ -66,7 +68,7 @@ export default class Articles extends Component {
     const renderSelectedTagName = (
       isTagClicked ? (
         <div className="selected-tag">
-          <span onClick={onTagCancleBtnClick}>
+          <span onClick={handleTagCancelBtnClick}>
             #
             {findTagName(selectedTag, tags)}
             <i className="fas fa-times" />
@@ -107,7 +109,7 @@ export default class Articles extends Component {
 
     const tagNames = tags.map((tag, i) => {
       return (
-        <li key={i} className="tag" onClick={_.partial(onTagClick, tag.id)}>
+        <li key={i} className="tag" onClick={_.partial(handleTagClick, tag.id)}>
           #
           {tag.name}
         </li>
